@@ -4,6 +4,7 @@ import codyhuh.onceuponatime.OnceUponATime;
 import codyhuh.onceuponatime.client.animations.HippogryphAnimation;
 import codyhuh.onceuponatime.common.entities.Hippogryph;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -12,13 +13,14 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Position;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Collections;
 
-public class HippogryphModel<T extends Hippogryph> extends AgeableHierarchicalModel<T> {
+public class HippogryphModel<T extends Hippogryph> extends OUATModel<T> {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(OnceUponATime.MOD_ID, "hippogryph"), "main");
 	private final ModelPart root;
 	public final ModelPart body;
@@ -110,22 +112,26 @@ public class HippogryphModel<T extends Hippogryph> extends AgeableHierarchicalMo
 	@Override
 	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
+
 		boolean flying = !entity.onGround() && (entity.isFlying() || entity.isLanding());
 
 		ears.visible = !entity.isWearingArmor();
 
 		if (!flying) {
-			this.animateWalk(HippogryphAnimation.WALK, limbSwing, limbSwingAmount, 3.0F, 100.0F);
-			this.animate(entity.idleAnimationState, HippogryphAnimation.IDLE, ageInTicks);
+			if (entity.walkAnimation.isMoving()) {
+				this.animateWalk(HippogryphAnimation.WALK, limbSwing, limbSwingAmount, 3.0F, 10.0F);
+			}
 		}
 		else {
 			if (entity.getDeltaMovement().y() > 0) {
-				this.animateWalk(HippogryphAnimation.FLY, limbSwing, limbSwingAmount, 3.0F, 100.0F);
+				this.animate(entity.flyAnimationState, HippogryphAnimation.FLY, ageInTicks, 3.0F, 1.0F);
 			}
 			else {
-				this.animateWalk(HippogryphAnimation.GLIDE, limbSwing, limbSwingAmount, 3.0F, 100.0F);
+				this.animate(entity.glideAnimationState, HippogryphAnimation.GLIDE, ageInTicks, 3.0F, 1.0F);
 			}
 		}
+
+		this.animateIdle(entity.idleAnimationState, HippogryphAnimation.IDLE, ageInTicks, 1.0F, 1 - Math.abs(limbSwingAmount));
 
 		this.head.xRot = headPitch * 0.017453292F;
 		this.head.yRot = netHeadYaw * 0.017453292F;

@@ -4,6 +4,7 @@ import codyhuh.onceuponatime.OnceUponATime;
 import codyhuh.onceuponatime.common.entities.Hippogryph;
 import codyhuh.onceuponatime.common.entities.Hydra;
 import codyhuh.onceuponatime.common.entities.Unicorn;
+import codyhuh.onceuponatime.common.entities.Wyvern;
 import codyhuh.onceuponatime.registry.ModEntities;
 import codyhuh.onceuponatime.registry.ModItems;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -23,5 +24,6 @@ public class CommonEvents {
         e.put(ModEntities.HIPPOGRYPH.get(), Hippogryph.createHippogryphAttributes().build());
         e.put(ModEntities.UNICORN.get(), Unicorn.createUnicornAttributes().build());
         e.put(ModEntities.HYDRA.get(), Hydra.createHydraAttributes().build());
+        e.put(ModEntities.WYVERN.get(), Wyvern.createWyvernAttributes().build());
     }
 }

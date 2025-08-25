@@ -1300,7 +1300,7 @@ public class HippogryphAnimation {
                 .build();
 
         public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(2.0F).looping()
-                /*.addAnimation("l_wing_1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
+                .addAnimation("l_wing_1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                         new Keyframe(0.0F, KeyframeAnimations.degreeVec(10.0F, -7.5F, 165.0F), AnimationChannel.Interpolations.CATMULLROM),
                         new Keyframe(0.125F, KeyframeAnimations.degreeVec(10.0F, -7.3097F, 165.9567F), AnimationChannel.Interpolations.CATMULLROM),
                         new Keyframe(0.25F, KeyframeAnimations.degreeVec(10.0F, -6.7678F, 166.7678F), AnimationChannel.Interpolations.CATMULLROM),
@@ -1395,7 +1395,7 @@ public class HippogryphAnimation {
                         new Keyframe(0.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 3.0F), AnimationChannel.Interpolations.CATMULLROM),
                         new Keyframe(1.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 3.0F), AnimationChannel.Interpolations.CATMULLROM),
                         new Keyframe(2.0F, KeyframeAnimations.posVec(0.0F, 0.0F, 3.0F), AnimationChannel.Interpolations.CATMULLROM)
-                ))*/
+                ))
                 .addAnimation("l_leg_1", new AnimationChannel(AnimationChannel.Targets.ROTATION,
                         new Keyframe(0.0F, KeyframeAnimations.degreeVec(-30.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),
                         new Keyframe(0.375F, KeyframeAnimations.degreeVec(0.0F, 0.0F, 0.0F), AnimationChannel.Interpolations.CATMULLROM),

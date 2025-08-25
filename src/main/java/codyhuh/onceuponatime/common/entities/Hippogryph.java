@@ -49,6 +49,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+// todo - move flying boilerplate code to an interface
 public class Hippogryph extends AbstractHorse {
     private static final EntityDataAccessor<Boolean> IS_FLYING = SynchedEntityData.defineId(Hippogryph.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_LANDING = SynchedEntityData.defineId(Hippogryph.class, EntityDataSerializers.BOOLEAN);
@@ -87,16 +88,11 @@ public class Hippogryph extends AbstractHorse {
 
     private void setupAnimationStates() {
         boolean flying = !onGround() && (isFlying() || isLanding());
+        double y = getDeltaMovement().y();
 
-        this.flyAnimationState.animateWhen(flying && yya > 0.0F, this.tickCount);
-        this.glideAnimationState.animateWhen(flying && yya <= 0.0F, this.tickCount);
-
-        if (this.idleAnimationTimeout == 0) {
-            this.idleAnimationTimeout = 80;
-            this.idleAnimationState.startIfStopped(this.tickCount);
-        } else {
-            --this.idleAnimationTimeout;
-        }
+        this.flyAnimationState.animateWhen(flying && y > 0.0F, this.tickCount);
+        this.glideAnimationState.animateWhen(flying && y <= 0.0F, this.tickCount);
+        this.idleAnimationState.animateWhen(!flying && !walkAnimation.isMoving(), this.tickCount);
     }
 
     public static AttributeSupplier.Builder createHippogryphAttributes() {
@@ -317,8 +313,6 @@ public class Hippogryph extends AbstractHorse {
 
     @Override
     public void tick() {
-        super.tick();
-
         if (this.level().isClientSide()) {
             this.setupAnimationStates();
         }
@@ -370,6 +364,8 @@ public class Hippogryph extends AbstractHorse {
         if (wanderGoal != null && isFlying() && !isLanding() && wantsToFly() && !isVehicle() && notMoving) {
             wanderGoal.trigger();
         }
+
+        super.tick();
     }
 
     @Override
