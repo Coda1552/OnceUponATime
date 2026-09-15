@@ -1,6 +1,8 @@
 package codyhuh.onceuponatime.common.entities;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -186,7 +188,9 @@ public class Hydra extends PathfinderMob {
 
     @Override
     public boolean hurt(DamageSource pSource, float pAmount) {
-        if (!isInvulnerableTo(pSource)) {
+        return super.hurt(pSource, pAmount);
+
+        /*if (!isInvulnerableTo(pSource)) {
             if (pSource.equals(damageSources().genericKill())) {
                 return super.hurt(pSource, pAmount);
             }
@@ -194,7 +198,7 @@ public class Hydra extends PathfinderMob {
                 return super.hurt(pSource, pAmount);
             }
         }
-        return !level().isClientSide();
+        return super.hurt(pSource, 0.0F);*/
     }
 
     public boolean damagePart(HydraPart part, DamageSource source, float damage) {
@@ -206,7 +210,7 @@ public class Hydra extends PathfinderMob {
                 //super.hurt(source, 0.0F);
             } else {
                 this.setRightHeadHealth(this.getRightHeadHealth() - damage);
-                return super.hurt(source, 0.0F);
+                return hurt(source, 0.0F);
             }
         }
         if (part.equals(this.headMiddle)) {
@@ -216,7 +220,7 @@ public class Hydra extends PathfinderMob {
                 //super.hurt(source, 0.0F);
             } else {
                 this.setMiddleHeadHealth(this.getMiddleHeadHealth() - damage);
-                return super.hurt(source, 0.0F);
+                return hurt(source, 0.0F);
             }
         }
         if (part.equals(this.headLeft)) {
@@ -226,7 +230,7 @@ public class Hydra extends PathfinderMob {
                 //super.hurt(source, 0.0F);
             } else {
                 this.setLeftHeadHealth(this.getLeftHeadHealth() - damage);
-                return super.hurt(source, 0.0F);
+                return hurt(source, 0.0F);
             }
         }
         return false;
